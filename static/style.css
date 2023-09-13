@@ -1,0 +1,22 @@
+table {
+  border: thick solid #ccc;
+  table-layout: auto;
+  width: 100%;
+  text-align: center;
+}
+caption {
+  background: #444;
+  color: #fff;
+  padding: 10px 15px;
+}
+
+span {
+  color: rgb(146, 146, 218);
+  font-weight: bold;
+}
+
+th,
+td {
+  border: thin solid #ccc;
+  padding: 10px 15px;
+}
