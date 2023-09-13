@@ -10,6 +10,7 @@ const { singleFileUpload } = require("../middlewares/fileUpload.middlewares");
 const ApiError = require("../helpers/apiError.helpers");
 const sendEmail = require("../helpers/sendMail.helpers");
 const sendSMS = require("../helpers/sendSMS.helpers");
+const { sanitizeUser } = require("../helpers/dataSanitization.helpers");
 
 class Auth {
   static uploadUserImage = singleFileUpload("profileImg");
@@ -44,7 +45,14 @@ class Auth {
 
     const token = this.#genToken(userData);
 
-    res.status(201).json({ data: userData, token });
+    res
+      .cookie("token", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: true,
+      })
+      .status(201)
+      .json({ data: sanitizeUser(userData) });
   });
 
   // @desc      User Login
@@ -61,7 +69,14 @@ class Auth {
     }
     const token = this.#genToken(userData);
 
-    res.status(200).json({ data: userData, token });
+    res
+      .cookie("token", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: true,
+      })
+      .status(200)
+      .json({ data: userData });
   });
 
   // @desc      Suer if User logged in
@@ -250,7 +265,14 @@ class Auth {
 
     const token = this.#genToken(userData);
 
-    res.status(200).send({ token });
+    res
+      .cookie("token", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: true,
+      })
+      .status(200)
+      .send({ message: "success" });
   });
 }
 
