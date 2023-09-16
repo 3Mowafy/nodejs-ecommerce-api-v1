@@ -30,7 +30,7 @@
     "nodemailer": "^6.9.3",
     "slugify": "^1.6.6",
     "stripe": "^13.4.0",
-    "twilio": "^4.12.0"
+    "twilio": "^4.16.0"
   },
   "engines": {
     "node": "^18.17.1"
