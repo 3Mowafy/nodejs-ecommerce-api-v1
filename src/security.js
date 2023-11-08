@@ -4,6 +4,7 @@ const compression = require("compression");
 const rateLimiter = require("express-rate-limit");
 const hpp = require("hpp");
 const mongoSanitize = require("express-mongo-sanitize");
+const { xss } = require("express-xss-sanitizer");
 const helmet = require("helmet");
 
 const appSecurity = (app) => {
@@ -16,6 +17,7 @@ const appSecurity = (app) => {
 
   //Data Sanitization
   app.use(mongoSanitize());
+  app.use(xss());
 
   // Helmet helps secure Express apps by setting HTTP response headers.
   app.use(helmet());

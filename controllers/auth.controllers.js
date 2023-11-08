@@ -23,7 +23,6 @@ class Auth {
         format: "jpg",
         public_id: `Users/users-${req.file.filename}-${Date.now()}`,
       });
-
       req.body.profileImg = result.secure_url;
       req.body.imageId = result.public_id;
     }
@@ -193,32 +192,47 @@ class Auth {
   // @route     POST  /api/v1/auth/forgotPassword/:type || email or phone
   // @access    public
   static forgotPassword = asyncHandler(async (req, res, next) => {
-    // Check user By Email
-    const userData = await userModel.findOne({ email: req.body.email });
-
-    if (!userData)
-      return next(
-        new ApiError(`No user exists with email (${req.body.email})`, 404)
-      );
     const randomCode = Math.floor(100000 + Math.random() * 900000).toString();
     const hashRandomCode = crypto
       .createHash("sha256")
       .update(randomCode)
       .digest("hex");
 
-    const codeExpirationTime = Date.now() + 10 * 60 * 1000;
-    userData.resetCode = hashRandomCode;
-    userData.resetCodeExp = codeExpirationTime;
-    userData.resetCodeVerified = false;
-
-    await userData.save();
+    let userData;
 
     if (req.params.type === "email") {
+      // Check user By Email
+      userData = await userModel.findOne({ email: req.body.email });
+
       this.#sendResetCodeByEmail(userData, randomCode, res);
     } else if (req.params.type === "phone") {
+      // Check user By Phone
+      userData = await userModel.findOne({ phone: req.body.phone });
+
       this.#sendResetCodeByPhone(userData, randomCode, res);
     } else {
-      res.status(404).send({ message: "The routes you provided do not exist" });
+      return res
+        .status(404)
+        .send({ message: "The routes you provided do not exist" });
+    }
+
+    if (userData) {
+      // Code Expire After 10 Minutues
+      const codeExpirationTime = Date.now() + 10 * 60 * 1000;
+      userData.resetCode = hashRandomCode;
+      userData.resetCodeExp = codeExpirationTime;
+      userData.resetCodeVerified = false;
+
+      await userData.save();
+    } else {
+      return next(
+        new ApiError(
+          `No user exists with Phone Number (${
+            req.params.type === "email" ? req.body.email : req.body.phone
+          })`,
+          404
+        )
+      );
     }
   });
 
