@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html dir="rtl">
+  <head>
+    <style>
+      .msg-info {
+        margin-top: 20px;
+      }
+      .reset-code {
+        width: fit-content;
+        background: #b187e936;
+        border: 2px solid #9669d1;
+        border-radius: 7px;
+        padding: 5px 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <strong>مرحبا ${userData.name}</strong>,
+    <div class="msg-info">
+      <span>لقد تلقينا طلبًا لإعادة تعيين كلمة السر الخاصة بك على المتجر الإلكتروني.</span>
+      <br />
+      <span>أدخل رمز إعادة تعيين كلمة السر التالي:</span>
+    </div>
+    <h1 class="reset-code">${randomCode}</h1>
+    <h3>ينتهي الكود بعد ${expireMinutes} دقائق</h3>
+    <p>لزيادة أمان حسابك لا تشارك رمز إعادة التعيين مع أي شخص آخر</p>
+    <p>
+      <strong>فريق عمل المتجر الإلكتروني</strong>
+    </p>
+  </body>
+</html>
