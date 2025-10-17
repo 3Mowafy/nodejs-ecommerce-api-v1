@@ -28,7 +28,7 @@ const appSecurity = (app) => {
   // Corss Origin and compression Responses
   app.use(
     cors({
-      origin: ["http://localhost", "http://localhost:4200","https://so-shop.netlify.app"],
+      origin: ["http://localhost", "http://localhost:4200","https://so-shop.netlify.app","https://so-shop.netlify.app/#/"],
       credentials: true,
     })
   );
