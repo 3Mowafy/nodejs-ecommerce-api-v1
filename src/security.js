@@ -35,7 +35,7 @@ const appSecurity = (app) => {
       credentials: true,
     })
   );
-  app.options("*", cors());
+  // app.options("*", cors());
   app.use(compression());
 
   // Limit each IP to 200 requests per `window` for 10 minutes
